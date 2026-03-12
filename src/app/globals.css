@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ===== DESIGN TOKENS (Tailwind v4 @theme) ===== */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Brand Colors */
+  --color-brand-green: #35cc20;
+  --color-brand-green-light: #6edc5f;
+  --color-brand-green-hover: #2db018;
+  --color-brand-green-50: #f0fdf0;
+  --color-brand-green-100: #dcfce7;
+  --color-brand-green-900: #14532d;
+
+  --color-brand-blue: #0c3a59;
+  --color-brand-blue-dark: #041e31;
+  --color-brand-blue-50: #eff6ff;
+  --color-brand-blue-800: #0a2e47;
+  --color-brand-blue-900: #071f32;
+
+  --color-brand-yellow: #f5c518;
+  --color-brand-yellow-light: #fde047;
+  --color-brand-yellow-glow: rgba(245, 197, 24, 0.15);
+
+  /* Dark Mode Surfaces */
+  --color-dark-bg: #030303;
+  --color-dark-surface: #0a0a0a;
+  --color-dark-card: #111111;
+  --color-dark-card-hover: #161616;
+  --color-dark-border: #1a1a1a;
+  --color-dark-border-hover: #2a2a2a;
+
+  /* Accent Glows */
+  --color-accent-green-glow: rgba(53, 204, 32, 0.15);
+  --color-accent-blue-glow: rgba(12, 58, 89, 0.3);
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ===== BASE STYLES ===== */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Gradient text — green to green-light */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-brand-green), var(--color-brand-green-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient text — green to yellow */
+.text-gradient-warm {
+  background: linear-gradient(135deg, var(--color-brand-green), var(--color-brand-yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Highlight text with skewed green underline */
+.highlight {
+  position: relative;
+  z-index: 1;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 30%;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(53, 204, 32, 0.2);
+  z-index: -1;
+  transform: skew(-15deg);
+}
+
+/* ===== GLOW BORDER ANIMATION ===== */
+@keyframes borderGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ===== BLUR REVEAL ANIMATION ===== */
+@keyframes blurReveal {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+.animate-blur-reveal {
+  animation: blurReveal 0.8s ease-out forwards;
+}
+
+/* ===== PULSE GLOW ===== */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(53, 204, 32, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(53, 204, 32, 0.6); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background-color: rgba(53, 204, 32, 0.3);
+  color: white;
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030303;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #35cc20;
+}
+
+/* ===== NUMBER INPUT ARROWS REMOVAL ===== */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ===== FOCUS STYLES (Accessibility) ===== */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-green);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
