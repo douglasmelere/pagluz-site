@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -11,6 +11,18 @@ interface VideoModalProps {
 }
 
 export default function VideoModal({ isOpen, onClose, videoSrc }: VideoModalProps) {
+  // Detect if videoSrc is a YouTube URL
+  const youtubeEmbedUrl = useMemo(() => {
+    if (!videoSrc) return null;
+    const ytMatch = videoSrc.match(
+      /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/
+    );
+    if (ytMatch) {
+      return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
+    }
+    return null;
+  }, [videoSrc]);
+
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -62,15 +74,25 @@ export default function VideoModal({ isOpen, onClose, videoSrc }: VideoModalProp
             className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl shadow-brand-green/10"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the video itself
           >
-            <video
-              src={videoSrc}
-              controls
-              autoPlay
-              controlsList="nodownload"
-              className="w-full h-full object-cover"
-            >
-              Seu navegador não suporta a tag de vídeo.
-            </video>
+            {youtubeEmbedUrl ? (
+              <iframe
+                width="100%"
+                height="100%"
+                src={youtubeEmbedUrl}
+                title="Apresentação PagLuz"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full rounded-2xl border-none outline-none ring-0"
+              ></iframe>
+            ) : (
+              <video
+                src={videoSrc}
+                autoPlay
+                controls
+                playsInline
+                className="w-full h-full rounded-2xl object-contain"
+              />
+            )}
           </motion.div>
         </motion.div>
       )}

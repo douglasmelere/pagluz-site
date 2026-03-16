@@ -39,6 +39,7 @@ export const NAV_LINKS = [
   { label: "Quem Somos", href: "/quem-somos" },
   { label: "Consumidor", href: "/consumidor" },
   { label: "Gerador", href: "/gerador" },
+  { label: "Portal de Notícias", href: "/blog" },
 ] as const;
 
 // EmailJS Config (values come from env, defaults are placeholders)

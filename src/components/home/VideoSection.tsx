@@ -60,8 +60,8 @@ export default function VideoSection() {
                   }}
                 />
 
-                {/* Play Button */}
-                <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 bg-brand-green text-dark-bg rounded-full flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_60px_rgba(53,204,32,0.5)]">
+                {/* Play Button — pushed up on mobile to avoid text overlap */}
+                <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 mb-10 md:mb-0 bg-brand-green text-dark-bg rounded-full flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_60px_rgba(53,204,32,0.5)]">
                   {/* Pulse ring */}
                   <span className="absolute inset-0 rounded-full animate-ping opacity-30 bg-brand-green/40" />
                   <Play size={32} className="ml-1.5 fill-dark-bg" />
@@ -69,8 +69,8 @@ export default function VideoSection() {
               </div>
 
               {/* Bottom gradient label */}
-              <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                <p className="text-white/80 text-base md:text-lg font-medium">
+              <div className="absolute bottom-0 left-0 w-full px-4 py-4 md:p-6 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+                <p className="text-white/80 text-sm md:text-lg font-medium">
                   Assista ao vídeo e entenda como funciona
                 </p>
               </div>

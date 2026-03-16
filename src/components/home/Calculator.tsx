@@ -234,31 +234,31 @@ export default function Calculator() {
                     >
                       {/* Main savings */}
                       <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex flex-col md:w-1/2">
+                        <div className="flex flex-col md:w-1/2 min-w-0">
                           <span className="text-white/30 text-xs font-medium tracking-widest uppercase mb-2">
                             Economia Anual Estimada
                           </span>
-                          <div className="text-4xl md:text-5xl font-bold text-gradient font-display">
+                          <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gradient font-display break-words">
                             {formatCurrency(result.yearlySavings)}
                           </div>
                           <span className="text-white/20 text-sm mt-1">por ano</span>
                         </div>
 
-                        <div className="w-full md:w-px h-px md:h-20 bg-white/[0.06]" />
+                        <div className="w-full md:w-px h-px md:h-20 bg-white/[0.06] shrink-0" />
 
                         {/* Monthly savings */}
-                        <div className="flex items-center gap-4 md:w-1/2 md:justify-end">
-                          <div className="p-3 bg-brand-green/10 rounded-xl border border-brand-green/20">
+                        <div className="flex items-center gap-4 md:w-1/2 md:justify-end min-w-0">
+                          <div className="p-3 bg-brand-green/10 rounded-xl border border-brand-green/20 shrink-0">
                             <Wallet2
                               size={22}
                               className="text-brand-green"
                             />
                           </div>
-                          <div>
+                          <div className="min-w-0">
                             <span className="block text-white/30 text-xs uppercase tracking-wider mb-1">
                               Desconto Mensal
                             </span>
-                            <span className="text-2xl font-bold text-white">
+                            <span className="text-xl sm:text-2xl font-bold text-white break-words">
                               {formatCurrency(result.monthlySavings)}
                             </span>
                           </div>
@@ -269,22 +269,22 @@ export default function Calculator() {
 
                       {/* New bill comparison */}
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
-                        <div>
+                        <div className="min-w-0 flex-1">
                           <span className="block text-white/30 text-xs tracking-wider mb-1">
                             Novo valor da conta:
                           </span>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                             <span className="text-sm font-medium text-white/25 line-through">
                               {formatCurrency(billValue)}
                             </span>
-                            <ArrowRight size={14} className="text-white/20" />
-                            <span className="text-2xl font-bold text-brand-green">
+                            <ArrowRight size={14} className="text-white/20 shrink-0" />
+                            <span className="text-xl sm:text-2xl font-bold text-brand-green">
                               {formatCurrency(result.newBillAmount)}
                             </span>
                           </div>
                         </div>
-                        <div className="px-3 py-1.5 rounded-full bg-brand-green/10 border border-brand-green/20">
-                          <span className="text-brand-green text-xs font-bold">
+                        <div className="px-3 py-1.5 rounded-full bg-brand-green/10 border border-brand-green/20 shrink-0">
+                          <span className="text-brand-green text-xs font-bold whitespace-nowrap">
                             -{result.discountPercentage}% OFF
                           </span>
                         </div>

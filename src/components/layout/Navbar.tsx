@@ -19,7 +19,7 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 w-full z-40 transition-all duration-300 ${
           isScrolled
-            ? "bg-dark-bg/95 backdrop-blur-md shadow-lg shadow-black/10 py-3 border-b border-dark-border"
+            ? "bg-dark-bg/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(255,255,255,0.04),0_4px_12px_rgba(0,0,0,0.3)] py-3"
             : "bg-transparent py-5"
         }`}
         aria-label="Navegação principal"
