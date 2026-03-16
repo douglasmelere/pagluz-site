@@ -11,7 +11,7 @@ export const CONTACT = {
   email: "comercial.pagluz@gmail.com",
   phone: "(49) 99837-6140",
   phoneRaw: "5549998376140",
-  location: "Luzerna - SC",
+  location: "R. Dezesseis de Fevereiro, 148, Luzerna - SC, 89609-000",
   whatsappMessage:
     "Olá! Gostaria de saber mais sobre a Pague Minha Luz.",
 } as const;
