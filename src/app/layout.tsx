@@ -6,7 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, CONTACT, SOCIAL_LINKS } from "@/lib/constants";
 
 // ===== FONTS =====
 const inter = Inter({
@@ -26,6 +26,9 @@ const spaceGrotesk = Space_Grotesk({
 // ===== SEO GLOBAL METADATA =====
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: `${SITE_NAME} - Economize até 30% na sua conta de energia`,
     template: `%s | ${SITE_NAME}`,
@@ -87,6 +90,31 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased bg-dark-bg text-white" suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": SITE_NAME,
+              "url": SITE_URL,
+              "logo": `${SITE_URL}/assets/logo.svg`,
+              "description": SITE_DESCRIPTION,
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": `+55${CONTACT.phoneRaw.substring(2)}`,
+                "contactType": "customer service",
+                "areaServed": "BR",
+                "availableLanguage": "Portuguese"
+              },
+              "sameAs": [
+                SOCIAL_LINKS.facebook,
+                SOCIAL_LINKS.instagram,
+                SOCIAL_LINKS.linkedin
+              ]
+            })
+          }}
+        />
         <Navbar />
         <main>{children}</main>
         <Footer />
