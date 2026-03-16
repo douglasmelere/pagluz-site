@@ -86,7 +86,7 @@ export default function VideoSection() {
       <VideoModal
         isOpen={isVideoOpen}
         onClose={() => setIsVideoOpen(false)}
-        videoSrc="/videos/institucional.mp4"
+        videoSrc="https://www.youtube.com/watch?v=og3LqQ2Ll-4"
       />
     </>
   );
