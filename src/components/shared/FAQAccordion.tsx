@@ -64,7 +64,10 @@ export default function FAQAccordion({
                 >
                   <button
                     onClick={() => toggleFAQ(index)}
-                    className="flex justify-between items-center w-full p-6 text-left focus:outline-none"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${index}`}
+                    id={`faq-question-${index}`}
+                    className="flex justify-between items-center w-full p-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-inset"
                   >
                     <h3 className={`text-base md:text-lg font-semibold font-display ${
                       isOpen ? 'text-brand-green' : 'text-white'
@@ -89,7 +92,12 @@ export default function FAQAccordion({
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="p-6 pt-0 text-white/35 leading-relaxed font-light text-sm">
+                        <div 
+                          id={`faq-answer-${index}`}
+                          role="region"
+                          aria-labelledby={`faq-question-${index}`}
+                          className="p-6 pt-0 text-white/35 leading-relaxed font-light text-sm"
+                        >
                           {item.answer}
                         </div>
                       </motion.div>

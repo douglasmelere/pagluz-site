@@ -45,7 +45,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative px-4 py-2 text-[15px] font-medium transition-colors duration-300 ${
+                  className={`relative px-4 py-2 text-[15px] font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:rounded-md ${
                     isActive
                       ? "text-brand-green"
                       : "text-white/90 hover:text-brand-green"
@@ -67,7 +67,7 @@ export default function Navbar() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-4 px-6 py-2.5 bg-brand-green text-brand-blue-dark font-semibold rounded-lg text-[15px] transition-all duration-300 hover:bg-brand-green-hover hover:shadow-lg hover:shadow-brand-green/20 hover:-translate-y-0.5 active:translate-y-0"
+              className="ml-4 px-6 py-2.5 bg-brand-green text-brand-blue-dark font-semibold rounded-lg text-[15px] transition-all duration-300 hover:bg-brand-green-hover hover:shadow-lg hover:shadow-brand-green/20 hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
             >
               Solicitar Simulação
             </a>
@@ -76,7 +76,7 @@ export default function Navbar() {
           {/* Mobile Hamburger */}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className="lg:hidden p-2 text-white hover:text-brand-green transition-colors"
+            className="lg:hidden p-2 text-white hover:text-brand-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:rounded-md"
             aria-label="Abrir menu"
             aria-expanded={isMobileMenuOpen}
           >

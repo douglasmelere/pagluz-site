@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface PageHeaderProps {
   title: string;
@@ -14,10 +15,17 @@ export default function PageHeader({ title, highlight, description, bgImage, chi
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-dark-bg overflow-hidden">
       {bgImage && (
-        <div 
-          className="absolute inset-0 bg-cover bg-center z-0" 
-          style={{ backgroundImage: `url('${bgImage}')` }} 
-        />
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={bgImage}
+            alt="Hero Background"
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+            quality={90}
+          />
+        </div>
       )}
       {/* Background */}
       <div className={`absolute inset-0 z-0 ${bgImage ? 'bg-dark-bg/85' : ''}`} />

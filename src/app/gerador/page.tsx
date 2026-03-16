@@ -43,9 +43,36 @@ const GENERATOR_FAQS = [
   }
 ];
 
+export const revalidate = 86400; // Validade do cache: 24 horas
+
 export default function GeradorMainPage() {
+  const jsonLdService = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Gestão e Maximização de Rentabilidade para Geradores de Energia",
+    "provider": { "@type": "Organization", "name": "PagLuz" },
+    "description": "Transforme seus créditos em maior rentabilidade. Nossa plataforma conecta sua usina a consumidores que buscam energia limpa com eficiência e transparência.",
+    "areaServed": "BR",
+    "serviceType": "Gestão de Créditos de Energia"
+  };
+
+  const jsonLdFaQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": GENERATOR_FAQS.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdService) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaQ) }} />
       <PageHeader 
         title="Maximize o valor da sua" 
         highlight="energia" 

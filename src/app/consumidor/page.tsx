@@ -42,9 +42,36 @@ const CONSUMER_FAQS = [
   }
 ];
 
+export const revalidate = 86400; // Validade do cache: 24 horas
+
 export default function ConsumidorPage() {
+  const jsonLdService = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Desconto na Conta de Luz por Geração Distribuída",
+    "provider": { "@type": "Organization", "name": "PagLuz" },
+    "description": "Reduza sua conta de luz em até 30% sem instalação. Conectamos você à energia renovável com economia garantida todo mês.",
+    "areaServed": "BR",
+    "serviceType": "Fornecimento de Energia Renovável"
+  };
+
+  const jsonLdFaQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": CONSUMER_FAQS.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdService) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaQ) }} />
       <PageHeader 
         title="Benefícios para" 
         highlight="Consumidores" 

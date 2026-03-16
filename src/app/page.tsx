@@ -6,6 +6,8 @@ import VideoSection from "@/components/home/VideoSection";
 import FeaturesBento from "@/components/home/FeaturesBento";
 import ContactForm from "@/components/home/ContactForm";
 
+export const revalidate = 86400; // Validade do cache: 24 horas
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
