@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { X, Smartphone, Facebook, Instagram, Linkedin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS, SOCIAL_LINKS, WHATSAPP_URL } from "@/lib/constants";
+import { useAuth } from "@/hooks/useAuth";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   // Lock body scroll when open
   useEffect(() => {
@@ -90,11 +92,42 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         : "border-transparent text-white hover:border-brand-green hover:text-brand-green hover:bg-white/5"
                     }`}
                   >
-                    {link.label}
                   </Link>
                 </motion.div>
               );
             })}
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + NAV_LINKS.length * 0.05 }}
+            >
+              <Link
+                href="/newsletter"
+                onClick={onClose}
+                className={`block w-full py-4 px-5 border-l-4 rounded-r-lg transition-all duration-200 text-lg font-bold ${
+                  pathname === '/newsletter'
+                    ? "border-brand-green bg-white/5 text-brand-green"
+                    : "border-transparent text-brand-green/90 hover:border-brand-green hover:text-brand-green hover:bg-white/5"
+                }`}
+              >
+                Newsletter IA
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + (NAV_LINKS.length + 1) * 0.05 }}
+            >
+              <Link
+                href={user ? "/dashboard/newsletter" : "/login"}
+                onClick={onClose}
+                className="block w-full py-4 px-5 border-l-4 rounded-r-lg transition-all duration-200 text-lg font-medium border-transparent text-white hover:border-white/40 hover:text-white hover:bg-white/5"
+              >
+                {user ? "Minha Conta" : "Entrar / Login"}
+              </Link>
+            </motion.div>
 
             <div className="w-full h-px bg-white/10 my-4" />
 

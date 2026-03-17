@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
+import { useAuth } from "@/hooks/useAuth";
 import { NAV_LINKS, WHATSAPP_URL } from "@/lib/constants";
 import MobileMenu from "./MobileMenu";
 
@@ -13,6 +14,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isScrolled = useScrollPosition(50);
   const pathname = usePathname();
+  const { user } = useAuth();
 
   return (
     <>
@@ -52,6 +54,7 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
+                  {link.label}
                   {/* Active underline */}
                   <span
                     className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-brand-green transition-all duration-300 ${
@@ -61,6 +64,24 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            <Link
+              href="/newsletter"
+              className={`relative px-4 py-2 text-[15px] font-bold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:rounded-md flex items-center gap-1 ${
+                pathname === '/newsletter'
+                  ? "text-brand-green"
+                  : "text-brand-green/90 hover:text-brand-green"
+              }`}
+            >
+              Newsletter IA
+            </Link>
+
+            <Link
+              href={user ? "/dashboard/newsletter" : "/login"}
+              className="ml-2 relative px-4 py-2 text-[15px] font-medium transition-colors duration-300 text-white/90 hover:text-white border border-white/20 rounded-lg hover:bg-white/10"
+            >
+              {user ? "Minha Conta" : "Entrar"}
+            </Link>
 
             {/* CTA Button */}
             <a
