@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { apiFetch } from '@/lib/api';
 import { Loader2 } from 'lucide-react';
 
-export default function RegisterNewsletterPage() {
+function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectParams = searchParams.get('redirect') || '/newsletter/checkout';
@@ -64,29 +64,12 @@ export default function RegisterNewsletterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-bg flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background Orbs */}
-      <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-brand-green/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-brand-blue/20 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white font-space-grotesk">
-          Criar conta para a <br className="hidden sm:block" />
-          <span className="text-brand-green">Newsletter Premium</span>
-        </h2>
-        <p className="mt-2 text-center text-sm text-white/70">
-          Receba dicas exclusivas e análises sobre o mercado de energia.
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 py-8 px-4 shadow sm:rounded-2xl sm:px-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-3 rounded-lg text-sm bg-opacity-20 animate-in fade-in slide-in-from-top-2">
-                {error}
-              </div>
-            )}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-3 rounded-lg text-sm bg-opacity-20 animate-in fade-in slide-in-from-top-2">
+          {error}
+        </div>
+      )}
             
             <div>
               <label className="block text-sm font-medium text-white/90 mb-1.5" htmlFor="name">
@@ -166,8 +149,33 @@ export default function RegisterNewsletterPage() {
               >
                 Faça login
               </Link>
-            </div>
-          </form>
+      </div>
+    </form>
+  );
+}
+
+export default function RegisterNewsletterPage() {
+  return (
+    <div className="min-h-screen bg-dark-bg flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-brand-green/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-brand-blue/20 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white font-space-grotesk">
+          Criar conta para a <br className="hidden sm:block" />
+          <span className="text-brand-green">Newsletter Premium</span>
+        </h2>
+        <p className="mt-2 text-center text-sm text-white/70">
+          Receba dicas exclusivas e análises sobre o mercado de energia.
+        </p>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 py-8 px-4 shadow sm:rounded-2xl sm:px-10">
+          <Suspense fallback={<div className="flex justify-center py-8"><Loader2 className="animate-spin text-brand-green w-8 h-8" /></div>}>
+            <RegisterForm />
+          </Suspense>
         </div>
       </div>
     </div>
