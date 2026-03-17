@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, CONTACT, SOCIAL_LINKS } from "@/lib/constants";
 
@@ -115,10 +116,12 @@ export default function RootLayout({
             })
           }}
         />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <AuthProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <WhatsAppButton />
+        </AuthProvider>
       </body>
     </html>
   );
