@@ -114,6 +114,7 @@ function RegisterForm() {
                 placeholder="••••••••"
                 required
                 minLength={6}
+                autoComplete="new-password"
               />
             </div>
 

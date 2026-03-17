@@ -63,6 +63,7 @@ function LoginForm() {
           className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-green"
           placeholder="seu@email.com"
           required
+          autoComplete="email"
         />
       </div>
 
@@ -78,6 +79,7 @@ function LoginForm() {
           className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-green"
           placeholder="••••••••"
           required
+          autoComplete="current-password"
         />
       </div>
 
