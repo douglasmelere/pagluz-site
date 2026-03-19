@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import { apiFetch } from '@/lib/api';
+import { apiFetch, API_URL } from '@/lib/api';
 import { Loader2, Settings2, CreditCard, Mail, MessageCircle, Save, ExternalLink, LogOut } from 'lucide-react';
+import { TAG_ICONS, type TagsResponse } from '@/types/newsletter';
 
 type DeliveryChannel = 'EMAIL' | 'WHATSAPP' | 'BOTH';
 
@@ -26,19 +27,21 @@ export default function NewsletterDashboardPage() {
   // States for Billing
   const [isPortalLoading, setIsPortalLoading] = useState(false);
 
-  const AVAILABLE_TAGS = [
-    { id: 'SOLAR', label: 'Energia Solar' },
-    { id: 'MERCADO_LIVRE', label: 'Mercado Livre' },
-    { id: 'REGULAMENTACAO', label: 'Regulamentação e Leis' },
-    { id: 'DICAS', label: 'Dicas de Economia' },
-    { id: 'TENDENCIAS', label: 'Tendências do Mercado' },
-  ];
+  const [availableTags, setAvailableTags] = useState<TagsResponse>({ tags: [], descriptions: {} });
 
   useEffect(() => {
     if (!authLoading && !token) {
       router.push('/login?redirect=/dashboard/newsletter');
     }
   }, [token, authLoading, router]);
+
+  useEffect(() => {
+    // Load tags (public endpoint, no auth needed)
+    fetch(`${API_URL}/newsletter/tags`)
+      .then(res => res.json())
+      .then(data => setAvailableTags(data))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -254,22 +257,29 @@ export default function NewsletterDashboardPage() {
                 <div>
                   <h3 className="text-lg font-semibold mb-4 border-b border-white/10 pb-2">Quais assuntos te interessam mais?</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                    {AVAILABLE_TAGS.map(tag => {
-                      const isSelected = tags.includes(tag.id);
-                      return (
-                        <button
-                          key={tag.id}
-                          onClick={() => toggleTag(tag.id)}
-                          className={`px-4 py-3 rounded-xl border text-left text-sm transition-all focus:outline-none ${isSelected ? 'border-brand-green bg-brand-green/10 text-white' : 'border-white/10 bg-white/5 text-white/70 hover:bg-white/10'}`}
-                        >
-                          <div className="flex items-center justify-between">
-                            {tag.label}
-                            {isSelected && <div className="w-2 h-2 rounded-full bg-brand-green" />}
-                          </div>
-                        </button>
-                      );
-                    })}
+                    {availableTags.tags
+                      .filter(t => t !== 'PROJECAO_MACRO')
+                      .map(tagId => {
+                        const isSelected = tags.includes(tagId);
+                        const icon = TAG_ICONS[tagId] || '📰';
+                        const label = availableTags.descriptions[tagId] || tagId;
+                        return (
+                          <button
+                            key={tagId}
+                            onClick={() => toggleTag(tagId)}
+                            className={`px-4 py-3 rounded-xl border text-left text-sm transition-all focus:outline-none ${isSelected ? 'border-brand-green bg-brand-green/10 text-white' : 'border-white/10 bg-white/5 text-white/70 hover:bg-white/10'}`}
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <span>{icon} {label}</span>
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-brand-green shrink-0" />}
+                            </div>
+                          </button>
+                        );
+                      })}
                   </div>
+                  {availableTags.tags.length === 0 && (
+                    <p className="text-white/30 text-sm mt-2">Carregando categorias...</p>
+                  )}
                 </div>
 
                 {/* Salvar */}
