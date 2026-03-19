@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
         destination: '/quem-somos',
         permanent: true,
       },
+      // Redirecionamento para o encurtador de newsletter do Backend
+      {
+        source: '/n/:id',
+        destination: 'https://api.pagluz.com.br/newsletter/r/:id',
+        permanent: false, // 302
+      },
       // You can add other legacy URL redirects here if needed
     ];
   },
