@@ -94,7 +94,7 @@ export default function NewsletterLandingPage() {
             </button>
             <p className="text-white/50 text-sm mt-3 sm:mt-0 sm:ml-4">
               Apenas <strong className="text-white">R$ 25,00/mês</strong>.<br />
-              <span className="text-brand-green">7 dias grátis</span> para testar.
+              Pagamento recorrente. Cancele quando quiser.
             </p>
           </div>
         </div>
