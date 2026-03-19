@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { apiFetch } from '@/lib/api';
-import { Loader2, Settings2, CreditCard, Mail, MessageCircle, Save, ExternalLink } from 'lucide-react';
+import { Loader2, Settings2, CreditCard, Mail, MessageCircle, Save, ExternalLink, LogOut } from 'lucide-react';
 
-type DeliveryChannel = 'EMAIL' | 'WHATSAPP';
+type DeliveryChannel = 'EMAIL' | 'WHATSAPP' | 'BOTH';
 
 export default function NewsletterDashboardPage() {
   const router = useRouter();
-  const { user, token, isLoading: authLoading } = useAuth();
+  const { user, token, isLoading: authLoading, login, logout } = useAuth();
   
   const [activeTab, setActiveTab] = useState<'PREFERENCES' | 'BILLING'>('PREFERENCES');
   
@@ -19,6 +19,7 @@ export default function NewsletterDashboardPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [deliveryChannel, setDeliveryChannel] = useState<DeliveryChannel>('EMAIL');
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
@@ -50,7 +51,8 @@ export default function NewsletterDashboardPage() {
       setIsDataLoading(true);
       const data = await apiFetch('/newsletter/preferences');
       setDeliveryChannel(data.deliveryChannel || 'EMAIL');
-      setPhone(data.phone || user?.phone || '');
+      setPhone(formatPhone(data.phone || user?.phone || ''));
+      setEmail(data.email || user?.email || '');
       setTags(data.tags || []);
     } catch (err: any) {
       console.error('Erro ao carregar preferências', err);
@@ -61,12 +63,16 @@ export default function NewsletterDashboardPage() {
     }
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '');
+  const formatPhone = (val: string) => {
+    let value = val.replace(/\D/g, '');
     if (value.length > 11) value = value.slice(0, 11);
     if (value.length > 2) value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
     if (value.length > 9) value = `${value.slice(0, 10)}-${value.slice(10)}`;
-    setPhone(value);
+    return value;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(formatPhone(e.target.value));
   };
 
   const toggleTag = (tagId: string) => {
@@ -84,9 +90,13 @@ export default function NewsletterDashboardPage() {
         data: {
           deliveryChannel,
           phone: phone.replace(/\D/g, ''),
+          email,
           tags
         }
       });
+      if (user && token) {
+        login(token, { ...user, phone: phone.replace(/\D/g, ''), email });
+      }
       setMessage({ type: 'success', text: 'Preferências salvas com sucesso!' });
       setTimeout(() => setMessage(null), 3000);
     } catch (err: any) {
@@ -145,12 +155,21 @@ export default function NewsletterDashboardPage() {
             </button>
           </div>
           
-          <button
-            onClick={() => router.push('/dashboard/newsletter/feed')}
-            className="flex items-center gap-2 justify-center px-6 py-3 border border-brand-green/30 text-brand-green hover:bg-brand-green/10 rounded-xl transition-all font-semibold text-sm h-fit"
-          >
-            Acessar Intelligence Hub <ExternalLink className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => router.push('/dashboard/newsletter/feed')}
+              className="flex items-center gap-2 justify-center px-6 py-3 border border-brand-green/30 text-brand-green hover:bg-brand-green/10 rounded-xl transition-all font-semibold text-sm h-fit"
+            >
+              Intelligence Hub <ExternalLink className="w-4 h-4" />
+            </button>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 justify-center px-4 py-3 border border-red-500/30 text-red-500 hover:bg-red-500/10 rounded-xl transition-all font-semibold text-sm h-fit"
+              title="Sair da conta"
+            >
+              Sair <LogOut className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Conteúdo Aba A: Preferências */}
@@ -164,14 +183,14 @@ export default function NewsletterDashboardPage() {
                 {/* Canal de Entrega */}
                 <div>
                   <h3 className="text-lg font-semibold mb-4 border-b border-white/10 pb-2">Onde deseja receber a newsletter?</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <label className={`cursor-pointer flex items-center gap-3 p-4 rounded-xl border transition-colors ${deliveryChannel === 'EMAIL' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
                       <input type="radio" name="channel" value="EMAIL" checked={deliveryChannel === 'EMAIL'} onChange={() => setDeliveryChannel('EMAIL')} className="hidden" />
                       <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${deliveryChannel === 'EMAIL' ? 'border-brand-green' : 'border-white/40'}`}>
                         {deliveryChannel === 'EMAIL' && <div className="w-2.5 h-2.5 bg-brand-green rounded-full" />}
                       </div>
                       <Mail className="w-5 h-5 text-white/70" />
-                      <span>Receber por E-mail</span>
+                      <span>Apenas E-mail</span>
                     </label>
 
                     <label className={`cursor-pointer flex items-center gap-3 p-4 rounded-xl border transition-colors ${deliveryChannel === 'WHATSAPP' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
@@ -180,13 +199,40 @@ export default function NewsletterDashboardPage() {
                         {deliveryChannel === 'WHATSAPP' && <div className="w-2.5 h-2.5 bg-brand-green rounded-full" />}
                       </div>
                       <MessageCircle className="w-5 h-5 text-white/70" />
-                      <span>Receber pelo WhatsApp</span>
+                      <span>Apenas WhatsApp</span>
+                    </label>
+
+                    <label className={`cursor-pointer flex items-center gap-3 p-4 rounded-xl border transition-colors ${deliveryChannel === 'BOTH' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
+                      <input type="radio" name="channel" value="BOTH" checked={deliveryChannel === 'BOTH'} onChange={() => setDeliveryChannel('BOTH')} className="hidden" />
+                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${deliveryChannel === 'BOTH' ? 'border-brand-green' : 'border-white/40'}`}>
+                        {deliveryChannel === 'BOTH' && <div className="w-2.5 h-2.5 bg-brand-green rounded-full" />}
+                      </div>
+                      <div className="flex -space-x-1.5 opacity-80">
+                        <Mail className="w-5 h-5 text-white z-10 bg-dark-bg/50 rounded-full" />
+                        <MessageCircle className="w-5 h-5 text-white" />
+                      </div>
+                      <span>Ambos os Canais</span>
                     </label>
                   </div>
                 </div>
 
+                {/* E-mail (Condicional) */}
+                {(deliveryChannel === 'EMAIL' || deliveryChannel === 'BOTH') && (
+                  <div className="animate-in fade-in slide-in-from-top-4">
+                    <label className="block text-sm font-medium text-white/90 mb-1.5" htmlFor="email">E-mail</label>
+                    <input
+                      id="email"
+                      type="email"
+                      className="w-full md:w-1/2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-green transition-all"
+                      placeholder="seu@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                )}
+
                 {/* Telefone (Condicional) */}
-                {deliveryChannel === 'WHATSAPP' && (
+                {(deliveryChannel === 'WHATSAPP' || deliveryChannel === 'BOTH') && (
                   <div className="animate-in fade-in slide-in-from-top-4">
                     <label className="block text-sm font-medium text-white/90 mb-1.5" htmlFor="phone">Número do WhatsApp</label>
                     <input
