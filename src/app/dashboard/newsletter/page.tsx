@@ -131,43 +131,47 @@ export default function NewsletterDashboardPage() {
   return (
     <div className="min-h-screen bg-dark-bg text-white pt-24 pb-16">
       <div className="container mx-auto px-4 max-w-4xl">
-        <h1 className="text-3xl font-bold font-space-grotesk mb-2">Minha Newsletter</h1>
-        <p className="text-white/60 mb-8">Gerencie suas preferências de IA e seu plano detalhado.</p>
-
-        {/* Tabs */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div className="flex space-x-2 bg-white/5 p-1 rounded-xl w-fit border border-white/10 overflow-x-auto">
-            <button
-              onClick={() => setActiveTab('PREFERENCES')}
-              className={`flex shrink-0 items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === 'PREFERENCES' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <Settings2 className="w-4 h-4" /> Preferências da IA
-            </button>
-            <button
-              onClick={() => setActiveTab('BILLING')}
-              className={`flex shrink-0 items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === 'BILLING' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <CreditCard className="w-4 h-4" /> Faturamento
-            </button>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold font-space-grotesk mb-1">Minha Newsletter</h1>
+            <p className="text-white/60 text-sm sm:text-base">Gerencie suas preferências e plano.</p>
           </div>
-          
-          <div className="flex items-center gap-2">
+          <button
+            onClick={logout}
+            className="flex items-center gap-2 justify-center px-4 py-2.5 border border-red-500/30 text-red-500 hover:bg-red-500/10 rounded-xl transition-all font-semibold text-sm w-fit"
+            title="Sair da conta"
+          >
+            <LogOut className="w-4 h-4" /> Sair
+          </button>
+        </div>
+
+        {/* Tabs + Actions */}
+        <div className="flex flex-col gap-3 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex bg-white/5 p-1 rounded-xl w-full sm:w-fit border border-white/10">
+              <button
+                onClick={() => setActiveTab('PREFERENCES')}
+                className={`flex flex-1 sm:flex-none items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'PREFERENCES' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Settings2 className="w-4 h-4" /> <span>Preferências</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('BILLING')}
+                className={`flex flex-1 sm:flex-none items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'BILLING' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <CreditCard className="w-4 h-4" /> <span>Faturamento</span>
+              </button>
+            </div>
+
             <button
               onClick={() => router.push('/dashboard/newsletter/feed')}
-              className="flex items-center gap-2 justify-center px-6 py-3 border border-brand-green/30 text-brand-green hover:bg-brand-green/10 rounded-xl transition-all font-semibold text-sm h-fit"
+              className="flex items-center gap-2 justify-center px-5 py-3 border border-brand-green/30 text-brand-green hover:bg-brand-green/10 rounded-xl transition-all font-semibold text-sm w-full sm:w-auto"
             >
               Intelligence Hub <ExternalLink className="w-4 h-4" />
-            </button>
-            <button
-              onClick={logout}
-              className="flex items-center gap-2 justify-center px-4 py-3 border border-red-500/30 text-red-500 hover:bg-red-500/10 rounded-xl transition-all font-semibold text-sm h-fit"
-              title="Sair da conta"
-            >
-              Sair <LogOut className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -183,35 +187,35 @@ export default function NewsletterDashboardPage() {
                 {/* Canal de Entrega */}
                 <div>
                   <h3 className="text-lg font-semibold mb-4 border-b border-white/10 pb-2">Onde deseja receber a newsletter?</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <label className={`cursor-pointer flex items-center gap-3 p-4 rounded-xl border transition-colors ${deliveryChannel === 'EMAIL' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <label className={`cursor-pointer flex items-center gap-2.5 p-3 sm:p-4 rounded-xl border transition-colors ${deliveryChannel === 'EMAIL' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
                       <input type="radio" name="channel" value="EMAIL" checked={deliveryChannel === 'EMAIL'} onChange={() => setDeliveryChannel('EMAIL')} className="hidden" />
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${deliveryChannel === 'EMAIL' ? 'border-brand-green' : 'border-white/40'}`}>
+                      <div className={`w-5 h-5 shrink-0 rounded-full border flex items-center justify-center ${deliveryChannel === 'EMAIL' ? 'border-brand-green' : 'border-white/40'}`}>
                         {deliveryChannel === 'EMAIL' && <div className="w-2.5 h-2.5 bg-brand-green rounded-full" />}
                       </div>
-                      <Mail className="w-5 h-5 text-white/70" />
-                      <span>Apenas E-mail</span>
+                      <Mail className="w-5 h-5 shrink-0 text-white/70" />
+                      <span className="text-sm">E-mail</span>
                     </label>
 
-                    <label className={`cursor-pointer flex items-center gap-3 p-4 rounded-xl border transition-colors ${deliveryChannel === 'WHATSAPP' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
+                    <label className={`cursor-pointer flex items-center gap-2.5 p-3 sm:p-4 rounded-xl border transition-colors ${deliveryChannel === 'WHATSAPP' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
                       <input type="radio" name="channel" value="WHATSAPP" checked={deliveryChannel === 'WHATSAPP'} onChange={() => setDeliveryChannel('WHATSAPP')} className="hidden" />
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${deliveryChannel === 'WHATSAPP' ? 'border-brand-green' : 'border-white/40'}`}>
+                      <div className={`w-5 h-5 shrink-0 rounded-full border flex items-center justify-center ${deliveryChannel === 'WHATSAPP' ? 'border-brand-green' : 'border-white/40'}`}>
                         {deliveryChannel === 'WHATSAPP' && <div className="w-2.5 h-2.5 bg-brand-green rounded-full" />}
                       </div>
-                      <MessageCircle className="w-5 h-5 text-white/70" />
-                      <span>Apenas WhatsApp</span>
+                      <MessageCircle className="w-5 h-5 shrink-0 text-white/70" />
+                      <span className="text-sm">WhatsApp</span>
                     </label>
 
-                    <label className={`cursor-pointer flex items-center gap-3 p-4 rounded-xl border transition-colors ${deliveryChannel === 'BOTH' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
+                    <label className={`cursor-pointer flex items-center gap-2.5 p-3 sm:p-4 rounded-xl border transition-colors ${deliveryChannel === 'BOTH' ? 'border-brand-green bg-brand-green/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
                       <input type="radio" name="channel" value="BOTH" checked={deliveryChannel === 'BOTH'} onChange={() => setDeliveryChannel('BOTH')} className="hidden" />
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${deliveryChannel === 'BOTH' ? 'border-brand-green' : 'border-white/40'}`}>
+                      <div className={`w-5 h-5 shrink-0 rounded-full border flex items-center justify-center ${deliveryChannel === 'BOTH' ? 'border-brand-green' : 'border-white/40'}`}>
                         {deliveryChannel === 'BOTH' && <div className="w-2.5 h-2.5 bg-brand-green rounded-full" />}
                       </div>
-                      <div className="flex -space-x-1.5 opacity-80">
-                        <Mail className="w-5 h-5 text-white z-10 bg-dark-bg/50 rounded-full" />
+                      <div className="flex -space-x-1.5 shrink-0 opacity-80">
+                        <Mail className="w-5 h-5 text-white z-10" />
                         <MessageCircle className="w-5 h-5 text-white" />
                       </div>
-                      <span>Ambos os Canais</span>
+                      <span className="text-sm">Ambos</span>
                     </label>
                   </div>
                 </div>
