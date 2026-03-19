@@ -125,22 +125,31 @@ export default function NewsletterDashboardPage() {
         <p className="text-white/60 mb-8">Gerencie suas preferências de IA e seu plano detalhado.</p>
 
         {/* Tabs */}
-        <div className="flex space-x-2 bg-white/5 p-1 rounded-xl mb-8 w-fit border border-white/10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex space-x-2 bg-white/5 p-1 rounded-xl w-fit border border-white/10 overflow-x-auto">
+            <button
+              onClick={() => setActiveTab('PREFERENCES')}
+              className={`flex shrink-0 items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'PREFERENCES' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Settings2 className="w-4 h-4" /> Preferências da IA
+            </button>
+            <button
+              onClick={() => setActiveTab('BILLING')}
+              className={`flex shrink-0 items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'BILLING' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <CreditCard className="w-4 h-4" /> Faturamento
+            </button>
+          </div>
+          
           <button
-            onClick={() => setActiveTab('PREFERENCES')}
-            className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
-              activeTab === 'PREFERENCES' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
-            }`}
+            onClick={() => router.push('/dashboard/newsletter/feed')}
+            className="flex items-center gap-2 justify-center px-6 py-3 border border-brand-green/30 text-brand-green hover:bg-brand-green/10 rounded-xl transition-all font-semibold text-sm h-fit"
           >
-            <Settings2 className="w-4 h-4" /> Preferências da IA
-          </button>
-          <button
-            onClick={() => setActiveTab('BILLING')}
-            className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-colors ${
-              activeTab === 'BILLING' ? 'bg-brand-green text-brand-blue-dark shadow' : 'text-white/70 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <CreditCard className="w-4 h-4" /> Faturamento
+            Acessar Intelligence Hub <ExternalLink className="w-4 h-4" />
           </button>
         </div>
 
