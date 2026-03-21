@@ -1,5 +1,6 @@
 import HeroSection from "@/components/home/HeroSection";
 import SavingsShowcase from "@/components/home/SavingsShowcase";
+import ServicesShowcase from "@/components/home/ServicesShowcase";
 import Calculator from "@/components/home/Calculator";
 import ProcessSteps from "@/components/home/ProcessSteps";
 import VideoSection from "@/components/home/VideoSection";
@@ -13,6 +14,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <HeroSection />
       <SavingsShowcase />
+      <ServicesShowcase />
       <FeaturesBento />
       <Calculator />
       <ProcessSteps />
